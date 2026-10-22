@@ -36,30 +36,28 @@ function main() {
         console.log(`  説明: ${testCase.description}`);
 
         const inputLines = [];
-        // inputLines.push(testCase.degree.toString()); // ※もし1行目に次数が必要な場合はこのコメントを外す
         inputLines.push(...testCase.exact_coefficients);
         
         fs.writeFileSync(INPUT_TXT_PATH, inputLines.join('\n'), 'utf-8');
         console.log(`  [1] ${testCase.name} の係数を ${INPUT_TXT_PATH} に書き込みました。`);
 
         try {
-            console.log(`  [2] MethodDka CUI (v3.4.0) を実行中...`);
+            console.log(`  [2] MethodDka CUI (v3.5.0) を実行中... (ライブ進捗表示)\n`);
             
-            // method-dka-core ディレクトリをカレントディレクトリとしてコマンドを実行
-            const stdOut = execSync(RUN_COMMAND, { 
+            // ★変更点: stdio: 'inherit' にすることで、コアの進捗バーが直接ターミナルに表示されます
+            execSync(RUN_COMMAND, { 
                 cwd: CORE_DIR, 
-                encoding: 'utf-8', 
-                stdio: 'pipe' 
+                stdio: 'inherit' 
             });
 
-            // 出力の読み込み (output.txt が生成されていればそれを読み、なければ標準出力を表示)
+            // 出力の読み込み (output.txt から取得)
             let resultText = "";
             if (fs.existsSync(OUTPUT_TXT_PATH)) {
                 resultText = fs.readFileSync(OUTPUT_TXT_PATH, 'utf-8');
-                console.log(`  [3] 結果 (output.txt から取得):`);
+                console.log(`\n  [3] 結果 (output.txt から取得):`);
             } else {
-                resultText = stdOut;
-                console.log(`  [3] 結果 (標準出力から取得):`);
+                resultText = "結果ファイルが見つかりませんでした。";
+                console.log(`\n  [3] 結果:`);
             }
 
             console.log(`--------------------------------------------------`);
@@ -68,7 +66,6 @@ function main() {
 
         } catch (error) {
             console.error(`  [エラー] CUIの実行に失敗しました: ${error.message}`);
-            if (error.stdout) console.log(error.stdout);
         }
     }
     console.log("=== 全テストケースの検証が完了しました ===");
