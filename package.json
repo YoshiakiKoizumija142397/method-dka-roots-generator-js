@@ -1,0 +1,22 @@
+{
+  "name": "method-dka-roots-generator-js",
+  "version": "1.0.0",
+  "description": "Close roots coefficient data generator for MethodDka CUI v3.4.0",
+  "main": "src/cli.js",
+  "scripts": {
+    "start": "node src/cli.js",
+    "benchmark": "node src/benchmark.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "math",
+    "dka",
+    "polynomial",
+    "precision"
+  ],
+  "author": "Yoshiaki Koizumi",
+  "license": "MIT",
+  "dependencies": {
+    "decimal.js": "^10.4.3"
+  }
+}
